@@ -270,18 +270,31 @@ body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ===== Résultats ===== */
-.results { display: grid; gap: 20px; padding: 8px 0 4px; }
-.result { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); background: var(--paper); }
-.result__img { width: 100%; display: block; }
-.result__bar {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 12px 16px;
+/* ===== Résultats (comparatif Gemini / OpenAI) ===== */
+.results { display: grid; gap: 26px; padding: 8px 0 4px; }
+.result__name { font-family: var(--serif); font-size: 22px; font-weight: 600; margin-bottom: 12px; }
+
+.variants { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.variant {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
 }
-.result__name { font-family: var(--serif); font-size: 20px; font-weight: 600; }
-.result__actions { display: flex; gap: 8px; }
+.variant__label {
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--muted); padding: 8px 10px 4px; text-align: center;
+}
+.variant__img { width: 100%; display: block; }
+.variant__actions { display: flex; gap: 6px; padding: 8px; margin-top: auto; }
+.variant__err { padding: 0 12px 16px; color: var(--muted); font-size: 13px; text-align: center; }
+.variant--error { justify-content: flex-start; }
+
 .iconbtn {
+  flex: 1;
   border: 1px solid var(--line); background: var(--paper);
-  border-radius: 999px; padding: 8px 14px; font-size: 14px; cursor: pointer; color: var(--green);
+  border-radius: 999px; padding: 7px 8px; font-size: 12px; cursor: pointer; color: var(--green);
 }
-.result--error { padding: 18px 16px; color: var(--muted); font-size: 14px; }
