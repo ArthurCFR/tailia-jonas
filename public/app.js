@@ -36,7 +36,7 @@ photoInput.addEventListener('change', async (e) => {
   const file = e.target.files && e.target.files[0];
   if (!file) return;
   try {
-    const { dataUrl, mimeType, base64 } = await resizeImage(file, 1024);
+    const { dataUrl, mimeType, base64 } = await resizeImage(file, 1536);
     state.photo = { mimeType, data: base64 };
     photoPreview.src = dataUrl;
     uploader.classList.add('has-photo');
@@ -147,7 +147,7 @@ const resultsList = document.getElementById('resultsList');
 generateBtn.addEventListener('click', async () => {
   if (!state.photo || state.selectedSuits.length === 0 || !state.background) return;
   show('loading');
-  loadingStatus.textContent = `Nous préparons vos essayages (Gemini + OpenAI)… cela prend une trentaine de secondes.`;
+  loadingStatus.textContent = `Nous habillons votre silhouette… cela prend une vingtaine de secondes.`;
 
   try {
     const res = await fetch('/api/generate', {
@@ -173,38 +173,28 @@ generateBtn.addEventListener('click', async () => {
 function renderResults(results) {
   resultsList.innerHTML = '';
   results.forEach((r) => {
-    const block = document.createElement('div');
-    block.className = 'result';
-    block.innerHTML = `<h3 class="result__name">${r.name}</h3>`;
-
-    const grid = document.createElement('div');
-    grid.className = 'variants';
-
-    (r.variants || []).forEach((v) => {
-      const cell = document.createElement('div');
-      cell.className = 'variant';
-      if (!v.image) {
-        cell.classList.add('variant--error');
-        cell.innerHTML = `<span class="variant__label">${v.label}</span><p class="variant__err">Génération impossible.</p>`;
-        grid.appendChild(cell);
-        return;
-      }
-      const src = `data:${v.image.mimeType};base64,${v.image.data}`;
-      cell.innerHTML = `
-        <span class="variant__label">${v.label}</span>
-        <img class="variant__img" src="${src}" alt="${r.name} — ${v.label}" />
-        <div class="variant__actions">
+    const wrap = document.createElement('div');
+    if (!r.image) {
+      wrap.className = 'result result--error';
+      wrap.textContent = `« ${r.name} » : génération impossible. ${r.error || ''}`;
+      resultsList.appendChild(wrap);
+      return;
+    }
+    const src = `data:${r.image.mimeType};base64,${r.image.data}`;
+    wrap.className = 'result';
+    wrap.innerHTML = `
+      <img class="result__img" src="${src}" alt="${r.name}" />
+      <div class="result__bar">
+        <span class="result__name">${r.name}</span>
+        <div class="result__actions">
           <button class="iconbtn" data-act="share">Partager</button>
           <button class="iconbtn" data-act="download">Enregistrer</button>
-        </div>`;
-      const filename = `jonas-${r.suitId}-${v.provider}.png`;
-      cell.querySelector('[data-act="download"]').addEventListener('click', () => downloadImage(src, filename));
-      cell.querySelector('[data-act="share"]').addEventListener('click', () => shareImage(src, filename, r.name));
-      grid.appendChild(cell);
-    });
-
-    block.appendChild(grid);
-    resultsList.appendChild(block);
+        </div>
+      </div>`;
+    const filename = `jonas-${r.suitId}.png`;
+    wrap.querySelector('[data-act="download"]').addEventListener('click', () => downloadImage(src, filename));
+    wrap.querySelector('[data-act="share"]').addEventListener('click', () => shareImage(src, filename, r.name));
+    resultsList.appendChild(wrap);
   });
 }
 

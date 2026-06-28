@@ -6,13 +6,6 @@ const path = require('path');
 
 const { buildPrompt, BACKGROUNDS } = require('./lib/prompt');
 const { generateTryOn, readReferenceImage, MODEL } = require('./lib/gemini');
-const { generateTryOnOpenAI, OPENAI_MODEL } = require('./lib/openai');
-
-// Providers actifs pour l'A/B. Chaque costume est généré par chacun en parallèle.
-const PROVIDERS = [
-  { id: 'gemini', label: 'Gemini', run: generateTryOn },
-  { id: 'openai', label: 'OpenAI', run: generateTryOnOpenAI },
-];
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -84,25 +77,18 @@ app.post('/api/generate', async (req, res) => {
       });
     }
 
-    // Chaque costume est généré par CHAQUE provider (Gemini + OpenAI) en parallèle,
-    // pour comparer la fidélité côte à côte. Tout tourne en parallèle pour limiter
-    // l'attente (~temps du provider le plus lent).
+    // 1 image par costume, en parallèle (max 3) pour réduire l'attente.
     const results = await Promise.all(
       suits.map(async (suit) => {
-        const suitImage = readReferenceImage(suit.ref);
-        const prompt = buildPrompt(suit, background);
-        const variants = await Promise.all(
-          PROVIDERS.map(async (p) => {
-            try {
-              const image = await p.run(prompt, photo, suitImage);
-              return { provider: p.id, label: p.label, image };
-            } catch (err) {
-              console.error(`[generate] ${p.id} échec costume ${suit.id} :`, err.message);
-              return { provider: p.id, label: p.label, image: null, error: err.message };
-            }
-          })
-        );
-        return { suitId: suit.id, name: suit.name, variants };
+        try {
+          const suitImage = readReferenceImage(suit.ref);
+          const prompt = buildPrompt(suit, background);
+          const image = await generateTryOn(prompt, photo, suitImage);
+          return { suitId: suit.id, name: suit.name, image };
+        } catch (err) {
+          console.error(`[generate] échec costume ${suit.id} :`, err.message);
+          return { suitId: suit.id, name: suit.name, image: null, error: err.message };
+        }
       })
     );
 
@@ -113,9 +99,7 @@ app.post('/api/generate', async (req, res) => {
   }
 });
 
-app.get('/healthz', (_req, res) =>
-  res.json({ ok: true, gemini: MODEL, openai: OPENAI_MODEL, providers: PROVIDERS.map((p) => p.id) })
-);
+app.get('/healthz', (_req, res) => res.json({ ok: true, model: MODEL }));
 
 app.listen(PORT, () => {
   console.log(`TailIA — JONAS & Cie en écoute sur http://localhost:${PORT}`);
