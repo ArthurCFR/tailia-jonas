@@ -1,0 +1,16 @@
+[
+  {
+    "id": "caviar-bleu",
+    "name": "Caviar Bleu",
+    "fabric": "costume deux pièces en laine bleu marine profond, tissage caviar finement texturé (effet grain de poudre), coupe ajustée, revers crantés, chemise blanche",
+    "ref": "/catalog/suits/caviar-bleu.jpg",
+    "thumb": "/catalog/suits/caviar-bleu.jpg"
+  },
+  {
+    "id": "prince-de-galles-gris",
+    "name": "Prince de Galles Gris",
+    "fabric": "costume deux pièces en laine gris clair à motif Prince de Galles (Glen check) aux reflets bleutés discrets, coupe ajustée, revers crantés, chemise blanche",
+    "ref": "/catalog/suits/prince-de-galles-gris.jpg",
+    "thumb": "/catalog/suits/prince-de-galles-gris-full.webp"
+  }
+]

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#1d7a34" />
+  <title>JONAS & Cie — Essayage virtuel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="app">
+
+    <!-- ÉCRAN 0 — Accueil -->
+    <section class="screen screen--home is-active" data-screen="home">
+      <header class="brand">
+        <img class="brand__logo" src="/assets/logojonas.webp" alt="JONAS & Cie Paris" />
+      </header>
+      <div class="home__hero">
+        <p class="overline">Essayage virtuel</p>
+        <h1 class="display">Voyez-vous dans nos costumes, avant même de les enfiler.</h1>
+        <p class="lead">
+          Une photo, quelques costumes choisis dans notre maison, et découvrez le rendu sur vous —
+          pour votre mariage ou celui d'un proche.
+        </p>
+      </div>
+      <div class="screen__footer">
+        <button class="btn btn--primary" data-go="photo">Commencer</button>
+        <p class="fineprint">Vos photos servent uniquement à générer vos essayages.</p>
+      </div>
+    </section>
+
+    <!-- ÉCRAN 1 — Photo -->
+    <section class="screen" data-screen="photo">
+      <header class="topbar">
+        <button class="topbar__back" data-back="home" aria-label="Retour">&#8592;</button>
+        <span class="topbar__step">Étape 1 / 3</span>
+      </header>
+      <div class="screen__body">
+        <h2 class="title">Votre photo</h2>
+        <p class="lead">Importez une photo <strong>en pied</strong>, bien éclairée, de face.</p>
+
+        <label class="uploader" id="uploader">
+          <input type="file" id="photoInput" accept="image/*" hidden />
+          <div class="uploader__placeholder" id="uploaderPlaceholder">
+            <span class="uploader__icon">&#128247;</span>
+            <span>Prendre ou choisir une photo</span>
+          </div>
+          <img class="uploader__preview" id="photoPreview" alt="" hidden />
+        </label>
+
+        <ul class="tips">
+          <li>Tenez-vous droit, bras le long du corps</li>
+          <li>Fond simple et lumière naturelle de préférence</li>
+        </ul>
+      </div>
+      <div class="screen__footer">
+        <button class="btn btn--primary" id="toSuits" data-go="suits" disabled>Continuer</button>
+      </div>
+    </section>
+
+    <!-- ÉCRAN 2 — Costumes -->
+    <section class="screen" data-screen="suits">
+      <header class="topbar">
+        <button class="topbar__back" data-back="photo" aria-label="Retour">&#8592;</button>
+        <span class="topbar__step">Étape 2 / 3</span>
+      </header>
+      <div class="screen__body">
+        <h2 class="title">Choisissez vos costumes</h2>
+        <p class="lead">Jusqu'à <strong>3 modèles</strong>. <span id="suitCount">0</span> sélectionné(s).</p>
+        <div class="grid" id="suitsGrid"><!-- vignettes injectées par app.js --></div>
+
+        <div class="addon addon--disabled">
+          <div class="addon__head">
+            <span>Accessoires — cravate, nœud papillon, pochette, bretelles</span>
+            <span class="badge">Bientôt</span>
+          </div>
+          <p class="addon__hint">Disponible prochainement, à partir du catalogue de la maison.</p>
+        </div>
+      </div>
+      <div class="screen__footer">
+        <button class="btn btn--primary" id="toAmbiance" data-go="ambiance" disabled>Continuer</button>
+      </div>
+    </section>
+
+    <!-- ÉCRAN 3 — Ambiance -->
+    <section class="screen" data-screen="ambiance">
+      <header class="topbar">
+        <button class="topbar__back" data-back="suits" aria-label="Retour">&#8592;</button>
+        <span class="topbar__step">Étape 3 / 3</span>
+      </header>
+      <div class="screen__body">
+        <h2 class="title">L'ambiance</h2>
+        <p class="lead">Le décor de vos visuels de mariage.</p>
+        <div class="ambiances" id="ambianceList"><!-- injecté par app.js --></div>
+      </div>
+      <div class="screen__footer">
+        <button class="btn btn--primary" id="generateBtn" disabled>Générer mes essayages</button>
+      </div>
+    </section>
+
+    <!-- ÉCRAN 4 — Génération -->
+    <section class="screen screen--loading" data-screen="loading">
+      <div class="loader">
+        <div class="loader__ring"></div>
+        <h2 class="title">Nous habillons votre silhouette…</h2>
+        <p class="lead" id="loadingStatus">Préparation…</p>
+      </div>
+    </section>
+
+    <!-- ÉCRAN 5 — Résultats -->
+    <section class="screen" data-screen="results">
+      <header class="topbar">
+        <span class="topbar__step">Vos essayages</span>
+      </header>
+      <div class="screen__body">
+        <div class="results" id="resultsList"><!-- injecté par app.js --></div>
+      </div>
+      <div class="screen__footer">
+        <button class="btn btn--ghost" id="restartBtn">Recommencer</button>
+      </div>
+    </section>
+
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
