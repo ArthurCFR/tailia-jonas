@@ -12,5 +12,26 @@
     "fabric": "costume deux pièces en laine gris clair à motif Prince de Galles (Glen check) aux reflets bleutés discrets, coupe ajustée, revers crantés, chemise blanche",
     "ref": "/catalog/suits/prince-de-galles-gris.jpg",
     "thumb": "/catalog/suits/prince-de-galles-gris-full.webp"
+  },
+  {
+    "id": "bleu-nuit",
+    "name": "Bleu Nuit",
+    "fabric": "costume deux pièces en laine bleu nuit lisse, coupe ajustée, revers crantés, chemise blanche",
+    "ref": "/catalog/suits/bleu-nuit.webp",
+    "thumb": "/catalog/suits/bleu-nuit.webp"
+  },
+  {
+    "id": "croise-marine",
+    "name": "Croisé Marine",
+    "fabric": "costume croisé (double boutonnage) en laine bleu marine, revers à pointes structurés, coupe ajustée élégante, chemise blanche",
+    "ref": "/catalog/suits/croise-marine.webp",
+    "thumb": "/catalog/suits/croise-marine.webp"
+  },
+  {
+    "id": "smoking-noir",
+    "name": "Smoking Noir",
+    "fabric": "smoking (tuxedo) noir en laine, revers châle en satin, nœud papillon noir et chemise blanche de smoking — tenue de cérémonie du soir",
+    "ref": "/catalog/suits/smoking-noir.webp",
+    "thumb": "/catalog/suits/smoking-noir.webp"
   }
 ]

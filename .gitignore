@@ -5,3 +5,8 @@ node_modules
 .env.*
 !.env.example
 .DS_Store
+
+# Images sources déposées à la racine (les versions servies sont dans public/catalog/suits/)
+/*_1600x.webp
+/*_600x.jpg
+/*_600x.webp

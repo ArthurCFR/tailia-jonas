@@ -77,19 +77,21 @@ app.post('/api/generate', async (req, res) => {
       });
     }
 
-    // 1 image par costume, séquentiel (maîtrise du coût + ordre stable).
-    const results = [];
-    for (const suit of suits) {
-      try {
-        const suitImage = readReferenceImage(suit.ref);
-        const prompt = buildPrompt(suit, background);
-        const image = await generateTryOn(prompt, photo, suitImage);
-        results.push({ suitId: suit.id, name: suit.name, image });
-      } catch (err) {
-        console.error(`[generate] échec costume ${suit.id} :`, err.message);
-        results.push({ suitId: suit.id, name: suit.name, image: null, error: err.message });
-      }
-    }
+    // 1 image par costume, en parallèle (max 3) pour réduire l'attente et le
+    // risque de timeout passerelle. L'ordre est préservé par le map.
+    const results = await Promise.all(
+      suits.map(async (suit) => {
+        try {
+          const suitImage = readReferenceImage(suit.ref);
+          const prompt = buildPrompt(suit, background);
+          const image = await generateTryOn(prompt, photo, suitImage);
+          return { suitId: suit.id, name: suit.name, image };
+        } catch (err) {
+          console.error(`[generate] échec costume ${suit.id} :`, err.message);
+          return { suitId: suit.id, name: suit.name, image: null, error: err.message };
+        }
+      })
+    );
 
     res.json({ results });
   } catch (err) {
