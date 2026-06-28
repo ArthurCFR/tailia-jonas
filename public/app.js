@@ -29,7 +29,7 @@ document.querySelectorAll('[data-back]').forEach((btn) => {
 // ===== Étape 1 : photo + redimensionnement client (canvas) =====
 const photoInput = document.getElementById('photoInput');
 const photoPreview = document.getElementById('photoPreview');
-const placeholder = document.getElementById('uploaderPlaceholder');
+const uploader = document.getElementById('uploader');
 const toSuitsBtn = document.getElementById('toSuits');
 
 photoInput.addEventListener('change', async (e) => {
@@ -39,8 +39,7 @@ photoInput.addEventListener('change', async (e) => {
     const { dataUrl, mimeType, base64 } = await resizeImage(file, 1024);
     state.photo = { mimeType, data: base64 };
     photoPreview.src = dataUrl;
-    photoPreview.hidden = false;
-    placeholder.hidden = true;
+    uploader.classList.add('has-photo');
     toSuitsBtn.disabled = false;
   } catch (err) {
     alert("Impossible de lire cette image. Essayez-en une autre.");

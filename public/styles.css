@@ -132,15 +132,22 @@ body {
 .btn--primary:disabled { background: #cfd3c8; color: #fff; cursor: not-allowed; }
 .btn--ghost { background: transparent; color: var(--green); border: 1px solid var(--green); }
 
+/* ===== Écran photo (centré) ===== */
+.screen__body--photo { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.screen__body--photo .title,
+.screen__body--photo .lead { width: 100%; }
+
 /* ===== Uploader photo ===== */
 .uploader {
   display: block;
-  margin: 18px 0 16px;
+  margin: 22px auto 18px;
+  width: 100%;
+  max-width: 300px;
   border: 1.5px dashed var(--line);
   border-radius: var(--radius);
   background: var(--cream);
   aspect-ratio: 3 / 4;
-  max-height: 46dvh;
+  max-height: 48dvh;
   overflow: hidden;
   cursor: pointer;
   position: relative;
@@ -155,11 +162,31 @@ body {
   gap: 10px;
   color: var(--muted);
   font-size: 15px;
+  padding: 16px;
+  text-align: center;
 }
 .uploader__icon { font-size: 34px; }
-.uploader__preview { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Caché par défaut ; affiché seulement quand une photo est chargée (classe d'état,
+   plus fiable que l'attribut [hidden] qui est écrasé par display:flex/block). */
+.uploader__preview { width: 100%; height: 100%; object-fit: cover; display: none; }
+.uploader__change {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  display: none;
+  padding: 8px;
+  font-size: 13px; color: #fff; text-align: center;
+  background: linear-gradient(transparent, rgba(28,33,24,0.65));
+}
+.uploader.has-photo .uploader__placeholder { display: none; }
+.uploader.has-photo .uploader__preview { display: block; }
+.uploader.has-photo .uploader__change { display: block; }
 
-.tips { list-style: none; display: grid; gap: 8px; }
+.tips {
+  list-style: none;
+  display: inline-grid;
+  gap: 8px;
+  text-align: left;
+  margin: 0 auto;
+}
 .tips li {
   font-size: 14px; color: var(--muted); padding-left: 20px; position: relative;
 }
